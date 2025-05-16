@@ -9,6 +9,7 @@ import '../features/auth/presentation/bloc/authentication_bloc.dart';
 import '../features/auth/presentation/cubit/otp_timer_cubit.dart';
 import '../features/company_profile/presentation/bloc/company_bloc.dart';
 import '../features/document/presentation/bloc/document_bloc.dart';
+import '../features/representative/presentation/bloc/representative_bloc.dart';
 import '../features/splash/presentation/bloc/bloc/version_bloc.dart';
 
 
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => DocumentBloc(),
+        ),
+        BlocProvider(
+          create: (context) => RepresentativeBloc(),
         ),
       ],
       child: MaterialApp(

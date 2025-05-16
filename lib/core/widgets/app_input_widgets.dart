@@ -233,7 +233,7 @@ class FilePickCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // Edit
-                          IconButton.outlined(
+                          IconButton.filledTonal(
                             onPressed: () async {
                               final file = await FileUtils.pickSingleFile();
                               if (file != null) fileNotifier.value = file;
@@ -245,7 +245,7 @@ class FilePickCard extends StatelessWidget {
                           const SizedBox(width: 12),
 
                           // View
-                          IconButton.outlined(
+                          IconButton.filledTonal(
                             onPressed: () {
                               final isPdf = _isPdf(showPreview);
                               final isLocal = pickedFile != null;
@@ -279,7 +279,7 @@ class FilePickCard extends StatelessWidget {
                           const SizedBox(width: 12),
 
                           // Delete
-                          IconButton.outlined(
+                          IconButton.filledTonal(
                             onPressed: () {
                               fileNotifier.value = null;
                             },

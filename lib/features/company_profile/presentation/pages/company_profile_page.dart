@@ -60,8 +60,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Company Profile')),
-      body: BlocConsumer<CompanyBloc, CompanyState>(builder: (context, state){
-        CompanyResponseModel? company;
+      body: BlocConsumer<CompanyBloc, CompanyState>(
+        builder: (context, state) {
+          CompanyResponseModel? company;
           if (state is CompanySuccessState) {
             company = state.companyResponseModel;
             websiteCon.text = company.website ?? '';
@@ -95,7 +96,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                     : AppNetworkImage(
                                       height: 100,
                                       width: 100,
-                                      imageUrl: "${AppUrls.imageBaseUrl}/${company?.companyLogo}",
+                                      imageUrl:
+                                          "${AppUrls.imageBaseUrl}/${company?.companyLogo}",
                                     )
                                 : Image.file(File(valueCompanyLogo.path)),
 
@@ -128,11 +130,11 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                               ),
 
                             if (company?.companyLogo != null ||
-                                companyLogoNotifier.value != null)
+                                valueCompanyLogo != null)
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton.outlined(
+                                  IconButton.filledTonal(
                                     onPressed: () async {
                                       final companyLogo = await appImagePicker(
                                         context,
@@ -146,7 +148,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                     ),
                                   ),
                                   const SizedBox(width: AppSizes.paddingBody),
-                                  IconButton.outlined(
+                                  IconButton.filledTonal(
                                     onPressed: () {
                                       // Handle zoom in action
                                       Navigator.push(
@@ -156,9 +158,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                               (context) => PhotoViewPage(
                                                 imageUrl: company?.companyLogo,
                                                 imagePath:
-                                                    companyLogoNotifier
-                                                        .value
-                                                        ?.path,
+                                                    valueCompanyLogo?.path,
                                               ),
                                         ),
                                       );
@@ -168,7 +168,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                     ),
                                   ),
                                   const SizedBox(width: AppSizes.paddingBody),
-                                  IconButton.outlined(
+                                  IconButton.filledTonal(
                                     onPressed: () {
                                       // Handle save action
                                       companyLogoNotifier.value = null;
@@ -270,19 +270,26 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                             child,
                           ) {
                             return InkWell(
-                              onTap: company?.isApplied != true ? () async {
-                                final datePick = await appDatePicker(
-                                  context,
-                                  selectedDate: yearOfEstablishmentDateValue,
-                                  lastDate: DateTime.now(),
-                                );
-                                if (datePick != null) {
-                                  yearOfEstablishmentDateNotifier.value =
-                                      datePick;
-                                  yearOfEstablishmentCon.text =
-                                      formatDateTime(dateTime: datePick) ?? '';
-                                }
-                              } : null,
+                              onTap:
+                                  company?.isApplied != true
+                                      ? () async {
+                                        final datePick = await appDatePicker(
+                                          context,
+                                          selectedDate:
+                                              yearOfEstablishmentDateValue,
+                                          lastDate: DateTime.now(),
+                                        );
+                                        if (datePick != null) {
+                                          yearOfEstablishmentDateNotifier
+                                              .value = datePick;
+                                          yearOfEstablishmentCon.text =
+                                              formatDateTime(
+                                                dateTime: datePick,
+                                              ) ??
+                                              '';
+                                        }
+                                      }
+                                      : null,
                               child: IgnorePointer(
                                 ignoring: true,
                                 child: AppTextFormField(
@@ -308,56 +315,62 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
               ),
               SizedBox(height: AppSizes.height(context, 50)),
 
-              if(company?.isApplied != true)
-              FilledButton(onPressed: () {
-                if (_companyFormKey.currentState!.validate()) {
-                  final companyRequestModel = CompanyRequestModel(
-                    website: websiteCon.text,
-                    faxNumber: faxNumberCon.text,
-                    phoneNumber: phoneNumberCon.text,
-                    addressOfCorrespondence:
-                        addressOfCorrespondenceCon.text,
-                    yearOfEstablishment:
-                        yearOfEstablishmentDateNotifier.value,
-                  );
+              if (company?.isApplied != true)
+                FilledButton(
+                  onPressed: () {
+                    if (_companyFormKey.currentState!.validate()) {
+                      final companyRequestModel = CompanyRequestModel(
+                        website: websiteCon.text,
+                        faxNumber: faxNumberCon.text,
+                        phoneNumber: phoneNumberCon.text,
+                        addressOfCorrespondence:
+                            addressOfCorrespondenceCon.text,
+                        yearOfEstablishment:
+                            yearOfEstablishmentDateNotifier.value,
+                      );
 
-                  SendFileModel? companyLogoFile;
+                      SendFileModel? companyLogoFile;
 
-                  if (companyLogoNotifier.value != null) {
-                    companyLogoFile = SendFileModel(
-                      filePath: companyLogoNotifier.value!.path,
-                      key: "company_logo",
-                    );
-                  }
+                      if (companyLogoNotifier.value != null) {
+                        companyLogoFile = SendFileModel(
+                          filePath: companyLogoNotifier.value!.path,
+                          key: "company_logo",
+                        );
+                      }
 
-                  if (company?.companyEmail == null) {
-                    companyRequestModel.companyEmail =
-                        companyEmailCon.text;
-                  }
+                      if (company?.companyEmail == null) {
+                        companyRequestModel.companyEmail = companyEmailCon.text;
+                      }
 
-                  context.read<CompanyBloc>().add(
-                        CompanyEventUpdateData(companyRequestModel: companyRequestModel, file: companyLogoFile
+                      context.read<CompanyBloc>().add(
+                        CompanyEventUpdateData(
+                          companyRequestModel: companyRequestModel,
+                          file: companyLogoFile,
                         ),
                       );
-                }
-              }, child: const Text("Save")),
+                    }
+                  },
+                  child: const Text("Save"),
+                ),
             ],
           );
-      }, listener: (context, state){
-        if (state is CompanyUpdateLoadingState) {
-          appLoadingDialog(context);
-        }else if (state is CompanyUpdateSuccessState) {
-          Navigator.pop(context);
-          Navigator.pop(context);
-          //show snackbar
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Company updated successfully")),
-          );
-        }else if (state is CompanyUpdateErrorState) {
-          Navigator.pop(context);
-          appShowInfo(context, title: 'Failed', content: state.errorMessage);
-        }
-      })
+        },
+        listener: (context, state) {
+          if (state is CompanyUpdateLoadingState) {
+            appLoadingDialog(context);
+          } else if (state is CompanyUpdateSuccessState) {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            //show snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Company updated successfully")),
+            );
+          } else if (state is CompanyUpdateErrorState) {
+            Navigator.pop(context);
+            appShowInfo(context, title: 'Failed', content: state.errorMessage);
+          }
+        },
+      ),
     );
   }
 }
