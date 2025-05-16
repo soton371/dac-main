@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-AppliciantResponseModel appliciantResponseModelFromJson(String str) => AppliciantResponseModel.fromJson(json.decode(str));
+ApplicantResponseModel applicantResponseModelFromJson(String str) => ApplicantResponseModel.fromJson(json.decode(str));
 
-String appliciantResponseModelToJson(AppliciantResponseModel data) => json.encode(data.toJson());
+String applicantResponseModelToJson(ApplicantResponseModel data) => json.encode(data.toJson());
 
-class AppliciantResponseModel {
+class ApplicantResponseModel {
     final int? id;
     final int? memberId;
     final String? applicantSignature;
@@ -18,7 +18,7 @@ class AppliciantResponseModel {
     final DateTime? applicationDate;
     final String? address;
 
-    AppliciantResponseModel({
+    ApplicantResponseModel({
         this.id,
         this.memberId,
         this.applicantSignature,
@@ -29,7 +29,7 @@ class AppliciantResponseModel {
         this.address,
     });
 
-    factory AppliciantResponseModel.fromJson(Map<String, dynamic> json) => AppliciantResponseModel(
+    factory ApplicantResponseModel.fromJson(Map<String, dynamic> json) => ApplicantResponseModel(
         id: json["id"],
         memberId: json["member_id"],
         applicantSignature: json["applicant_signature"],

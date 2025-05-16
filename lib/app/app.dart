@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../core/constant/app_colors.dart';
 import '../core/constant/app_urls.dart';
+import '../features/applicant/presentation/bloc/applicant_bloc.dart';
 import '../features/auth/presentation/bloc/authentication_bloc.dart';
 import '../features/auth/presentation/cubit/otp_timer_cubit.dart';
 import '../features/company_profile/presentation/bloc/company_bloc.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => RepresentativeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ApplicantBloc(),
         ),
       ],
       child: MaterialApp(

@@ -24,4 +24,7 @@ class AppUrls {
 
   //for representative
   static const String representativeUrl = '$baseUrl/member/company/representative';
+
+  //for applicant
+  static const String applicantUrl = '$baseUrl/member/company/applicant';
 }
