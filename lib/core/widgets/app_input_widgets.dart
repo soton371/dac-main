@@ -60,7 +60,6 @@ class AppTextFormField extends StatelessWidget {
         labelText: labelText,
         hintText: hintText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        isDense: true,
         hintStyle: const TextStyle(fontWeight: FontWeight.w400),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.seed),
@@ -152,6 +151,8 @@ Future<DateTime?> appDatePicker(BuildContext context,
     initialDate = lastDate;
   } else if (initialDate.isBefore(firstDate)) {
     initialDate = firstDate;
+  }else {
+    initialDate = selectedDate ?? DateTime.now();
   }
 
   final DateTime? pickedDate = await showDatePicker(
@@ -213,7 +214,10 @@ class FilePickCard extends StatelessWidget {
                           children: [
                             Icon(icon),
                             const SizedBox(height: 12),
-                            Text('Add $title (pdf, png, jpg, jpeg)'),
+                            Text('Add $title (pdf, png, jpg, jpeg)',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                )),
                           ],
                         ),
                       ),

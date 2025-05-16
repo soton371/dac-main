@@ -10,7 +10,6 @@ import '../features/company_profile/presentation/bloc/company_bloc.dart';
 import '../features/document/presentation/bloc/document_bloc.dart';
 import '../features/document/presentation/page/document_page.dart';
 import '../features/splash/presentation/bloc/bloc/version_bloc.dart';
-import '../features/splash/presentation/pages/splash_page.dart';
 
 
 class MyApp extends StatelessWidget {
