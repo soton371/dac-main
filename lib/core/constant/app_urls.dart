@@ -21,4 +21,7 @@ class AppUrls {
 
   //for document
   static const String documentUrl = '$baseUrl/member/document';
+
+  //for representative
+  static const String representativeUrl = '$baseUrl/member/company/representative';
 }

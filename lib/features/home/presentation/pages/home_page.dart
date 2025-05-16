@@ -3,6 +3,7 @@ import 'package:dac/features/home/presentation/widgets/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import '../../../company_profile/presentation/pages/company_profile_page.dart';
+import '../../../document/presentation/page/document_page.dart';
 import '../widgets/head_widget.dart';
 
 class HomePage extends StatelessWidget {
@@ -43,6 +44,12 @@ class HomePage extends StatelessWidget {
                         color: Colors.amber,
                         requiredFields: 9,
                         percent: 0,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DocumentPage(),
+                          ),
+                        ),
                       ),
                     ),
                   ],

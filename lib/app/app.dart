@@ -1,4 +1,5 @@
 import 'package:dac/core/constant/app_sizes.dart';
+import 'package:dac/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +9,6 @@ import '../features/auth/presentation/bloc/authentication_bloc.dart';
 import '../features/auth/presentation/cubit/otp_timer_cubit.dart';
 import '../features/company_profile/presentation/bloc/company_bloc.dart';
 import '../features/document/presentation/bloc/document_bloc.dart';
-import '../features/document/presentation/page/document_page.dart';
 import '../features/splash/presentation/bloc/bloc/version_bloc.dart';
 
 
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.seed),
         ),
         // home: const SplashPage(),
-        home: const DocumentPage(),
+        home: const HomePage(),
       ),
     );
   }
