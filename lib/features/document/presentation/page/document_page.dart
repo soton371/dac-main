@@ -4,7 +4,6 @@ import 'package:dac/features/document/presentation/bloc/document_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constant/app_enum.dart';
 import '../../../../core/widgets/app_input_widgets.dart';
@@ -21,7 +20,7 @@ class _DocumentPageState extends State<DocumentPage> {
     null,
   );
   final TextEditingController licenseNumberController = TextEditingController();
-  final ValueNotifier<XFile?> tradeLicenseCopyNotifier = ValueNotifier<XFile?>(
+  final ValueNotifier<String?> tradeLicenseCopyNotifier = ValueNotifier<String?>(
     null,
   );
   final TextEditingController tradeLicenseNumberController =
@@ -30,11 +29,11 @@ class _DocumentPageState extends State<DocumentPage> {
       TextEditingController();
   final ValueNotifier<DateTime?> tradeLicenseExpiresInNotifier =
       ValueNotifier<DateTime?>(null);
-  final ValueNotifier<XFile?> memorandumCopyNotifier = ValueNotifier<XFile?>(
+  final ValueNotifier<String?> memorandumCopyNotifier = ValueNotifier<String?>(
     null,
   );
-  final ValueNotifier<XFile?> articlesAssociationCopyNotifier =
-      ValueNotifier<XFile?>(null);
+  final ValueNotifier<String?> articlesAssociationCopyNotifier =
+      ValueNotifier<String?>(null);
   final TextEditingController tinNumberController = TextEditingController();
   final ValueNotifier<CompanyType?> companyTypeNotifier =
       ValueNotifier<CompanyType?>(null);
@@ -82,6 +81,38 @@ class _DocumentPageState extends State<DocumentPage> {
                 fileNotifier: licenseCopyNotifier,
                 icon: HugeIcons.strokeRoundedLicense,
               ),
+              const SizedBox(height: AppSizes.paddingBody),
+              AppTextFormField(
+                controller: licenseNumberController,
+                labelText: "License Number",
+                hintText: "Enter License Number",
+                validator: (value) {
+                  if ((value??'').trim().isEmpty) {
+                    return "Please enter license number";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: AppSizes.paddingBody),
+              FilePickCard(
+                title: "Trade License Copy",
+                existingFileUrl: documentResponseModel?.tradeLicenseCopy,
+                fileNotifier: tradeLicenseCopyNotifier,
+                icon: HugeIcons.strokeRoundedLicense,
+              ),
+              const SizedBox(height: AppSizes.paddingBody),
+              AppTextFormField(
+                controller: tradeLicenseNumberController,
+                labelText: "Trade License Number",
+                hintText: "Enter Trade License Number",
+                validator: (value) {
+                  if ((value??'').trim().isEmpty) {
+                    return "Please enter trade license number";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: AppSizes.paddingBody),
             ],
           );
         },
