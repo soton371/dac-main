@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import '../constant/app_sizes.dart';
 import '../utilities/file_utils.dart';
 
-
 class AppTextFormField extends StatelessWidget {
   const AppTextFormField({
     this.textInputAction,
@@ -139,10 +138,12 @@ Future<XFile?> appImagePicker(BuildContext context) async {
   return photo;
 }
 
-
-
-Future<DateTime?> appDatePicker(BuildContext context,
-    {DateTime? firstDate, DateTime? lastDate, DateTime? selectedDate}) async {
+Future<DateTime?> appDatePicker(
+  BuildContext context, {
+  DateTime? firstDate,
+  DateTime? lastDate,
+  DateTime? selectedDate,
+}) async {
   firstDate ??= DateTime.now().subtract(const Duration(days: 360 * 90));
   lastDate ??= DateTime.now().add(const Duration(days: 365 * 20));
 
@@ -151,7 +152,7 @@ Future<DateTime?> appDatePicker(BuildContext context,
     initialDate = lastDate;
   } else if (initialDate.isBefore(firstDate)) {
     initialDate = firstDate;
-  }else {
+  } else {
     initialDate = selectedDate ?? DateTime.now();
   }
 
@@ -164,10 +165,6 @@ Future<DateTime?> appDatePicker(BuildContext context,
 
   return pickedDate ?? selectedDate;
 }
-
-
-
-
 
 class FilePickCard extends StatelessWidget {
   final String title;
@@ -183,13 +180,16 @@ class FilePickCard extends StatelessWidget {
     required this.icon,
   });
 
-  bool _isPdf(String? path) => path?.toLowerCase().trim().endsWith('.pdf') ?? false;
+  bool _isPdf(String? path) =>
+      path?.toLowerCase().trim().endsWith('.pdf') ?? false;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(AppSizes.paddingInside), // Use AppSizes if you have them
+        padding: const EdgeInsets.all(
+          AppSizes.paddingInside,
+        ), // Use AppSizes if you have them
         child: ValueListenableBuilder<String?>(
           valueListenable: fileNotifier,
           builder: (context, pickedFile, child) {
@@ -214,17 +214,15 @@ class FilePickCard extends StatelessWidget {
                           children: [
                             Icon(icon),
                             const SizedBox(height: 12),
-                            Text('Add $title (pdf, png, jpg, jpeg)',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                )),
+                            Text(
+                              'Add $title (pdf, png, jpg, jpeg)',
+                              style: const TextStyle(fontSize: 12),
+                            ),
                           ],
                         ),
                       ),
                   ],
                 ),
-
-                
 
                 // Action buttons (edit, view, delete)
                 if (showPreview != null)
@@ -240,34 +238,38 @@ class FilePickCard extends StatelessWidget {
                               final file = await FileUtils.pickSingleFile();
                               if (file != null) fileNotifier.value = file;
                             },
-                            icon: const Icon(HugeIcons.strokeRoundedPencilEdit02),
+                            icon: const Icon(
+                              HugeIcons.strokeRoundedPencilEdit02,
+                            ),
                           ),
                           const SizedBox(width: 12),
-                      
+
                           // View
                           IconButton.outlined(
                             onPressed: () {
                               final isPdf = _isPdf(showPreview);
                               final isLocal = pickedFile != null;
-                      
+
                               if (isPdf) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => PdfViewPage(
-                                      source: showPreview,
-                                      isFromUrl: !isLocal,
-                                    ),
+                                    builder:
+                                        (_) => PdfViewPage(
+                                          source: showPreview,
+                                          isFromUrl: !isLocal,
+                                        ),
                                   ),
                                 );
                               } else {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => PhotoViewPage(
-                                      imageUrl: existingFileUrl,
-                                      imagePath: pickedFile,
-                                    ),
+                                    builder:
+                                        (_) => PhotoViewPage(
+                                          imageUrl: existingFileUrl,
+                                          imagePath: pickedFile,
+                                        ),
                                   ),
                                 );
                               }
@@ -275,7 +277,7 @@ class FilePickCard extends StatelessWidget {
                             icon: const Icon(HugeIcons.strokeRoundedZoomInArea),
                           ),
                           const SizedBox(width: 12),
-                      
+
                           // Delete
                           IconButton.outlined(
                             onPressed: () {
@@ -299,7 +301,6 @@ class FilePickCard extends StatelessWidget {
   }
 }
 
-
 /*
 FilePickCard(
   title: "License Copy",
@@ -308,3 +309,243 @@ FilePickCard(
   icon: HugeIcons.strokeRoundedLicense,
 ),
 */
+
+class AppSheetInput<T> extends FormField<T> {
+  final List<T> items;
+  final T? selectedItem;
+  final String Function(T) getLabel;
+  final String hint;
+  final String label;
+  final bool isSearchable;
+  final double? height;
+
+  AppSheetInput({
+    super.key,
+    required this.items,
+    this.height,
+    required this.selectedItem,
+    super.initialValue,
+    required this.getLabel,
+    required void Function(T?) onChanged,
+    this.isSearchable = false,
+    required this.hint,
+    required this.label,
+    super.validator,
+    bool autovalidateMode = false,
+  }) : super(
+         autovalidateMode:
+             autovalidateMode
+                 ? AutovalidateMode.onUserInteraction
+                 : AutovalidateMode.disabled,
+         builder: (FormFieldState<T> state) {
+           return _AppSheetContent<T>(
+             label: label,
+             items: items,
+             height: height,
+             selectedItem: selectedItem,
+             getLabel: getLabel,
+             onChanged: (T? value) {
+               state.didChange(value);
+               onChanged(value);
+             },
+             hint: hint,
+             isSearchable: isSearchable,
+             errorText: state.errorText,
+             state: state,
+           );
+         },
+       );
+}
+
+class _AppSheetContent<T> extends StatefulWidget {
+  final List<T> items;
+  final T? selectedItem;
+  final String Function(T) getLabel;
+  final void Function(T?) onChanged;
+  final String hint;
+  final String label;
+  final bool isSearchable;
+  final String? errorText;
+  final double? height;
+  final FormFieldState<T> state;
+
+  const _AppSheetContent({
+    required this.items,
+    required this.height,
+    required this.selectedItem,
+    required this.getLabel,
+    required this.onChanged,
+    required this.hint,
+    required this.label,
+    required this.isSearchable,
+    required this.errorText,
+    required this.state,
+  });
+
+  @override
+  State<_AppSheetContent<T>> createState() => _AppSheetContentState<T>();
+}
+
+class _AppSheetContentState<T> extends State<_AppSheetContent<T>> {
+  final TextEditingController _searchController = TextEditingController();
+  List<T> _filteredItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredItems = widget.items;
+  }
+
+  @override
+  void didUpdateWidget(covariant _AppSheetContent<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.items != widget.items) {
+      setState(() {
+        _filteredItems = widget.items;
+      });
+    }
+  }
+
+  void _showDropdown() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Container(
+              height: widget.height,
+              margin: const EdgeInsets.only(
+                left: AppSizes.paddingBody,
+                bottom: AppSizes.paddingBody,
+                right: AppSizes.paddingBody,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.onPrimary(context),
+                borderRadius: BorderRadius.circular(AppSizes.radius),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.isSearchable) ...[
+                    const SizedBox(height: AppSizes.paddingInside),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.paddingBody,
+                      ),
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: "Search...",
+                          fillColor: AppColors.onInverseSurface(context),
+                          prefixIcon: HugeIcon(
+                            icon: HugeIcons.strokeRoundedSearch01,
+                            color: AppColors.outline(context),
+                            size: 20,
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setModalState(() {
+                            _filteredItems =
+                                widget.items
+                                    .where(
+                                      (item) => widget
+                                          .getLabel(item)
+                                          .toLowerCase()
+                                          .contains(value.toLowerCase()),
+                                    )
+                                    .toList();
+                          });
+                        },
+                      ),
+                    ),
+                    _buildListView(),
+                  ] else
+                    _buildListView(),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    ).then((_) {
+      _searchController.clear();
+      setState(() {
+        _filteredItems = widget.items;
+      });
+    });
+  }
+
+  Widget _buildListView() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _filteredItems.length,
+      itemBuilder: (context, index) {
+        final item = _filteredItems[index];
+        final isSelected = widget.selectedItem == item;
+        return ListTile(
+          title: Text(
+            widget.getLabel(item),
+            style: TextStyle(
+              color: isSelected ? AppColors.primary(context) : null,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          leading:
+              isSelected
+                  ? Icon(Icons.check, color: AppColors.primary(context))
+                  : const SizedBox(width: 24),
+          onTap: () {
+            widget.onChanged(item);
+            Navigator.pop(context);
+            _searchController.clear();
+            setState(() {
+              _filteredItems = widget.items;
+            });
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bool hasValue = widget.selectedItem != null;
+
+    return InkWell(
+      onTap: _showDropdown,
+      child: IgnorePointer(
+        ignoring: true,
+        child: TextFormField(
+          readOnly: true,
+          controller: TextEditingController(
+            text: hasValue ? widget.getLabel(widget.selectedItem as T) : '',
+          ),
+          decoration: InputDecoration(
+            labelText: widget.label,
+            hintText: widget.hint,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintStyle: const TextStyle(fontWeight: FontWeight.w400),
+            suffixIcon: const Icon(
+              Icons.arrow_drop_down,
+              size: 20,
+              color: Colors.grey,
+            ),
+            errorText: widget.errorText,
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.seed),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

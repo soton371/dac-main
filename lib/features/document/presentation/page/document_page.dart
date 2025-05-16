@@ -156,8 +156,7 @@ class _DocumentPageState extends State<DocumentPage> {
               const SizedBox(height: AppSizes.paddingBody),
               FilePickCard(
                 title: "Articles of Association Copy",
-                existingFileUrl:
-                    documentResponseModel?.articlesAssociationCopy,
+                existingFileUrl: documentResponseModel?.articlesAssociationCopy,
                 fileNotifier: articlesAssociationCopyNotifier,
                 icon: HugeIcons.strokeRoundedLicense,
               ),
@@ -174,6 +173,24 @@ class _DocumentPageState extends State<DocumentPage> {
                 },
               ),
               const SizedBox(height: AppSizes.paddingBody),
+              ValueListenableBuilder(
+                valueListenable: companyTypeNotifier,
+                builder: (context, companyTypeValue, child) {
+                  return AppSheetInput<CompanyType>(
+                    items: CompanyType.values,
+                    selectedItem: companyTypeValue,
+                    getLabel: (item) => item.name.toUpperCase(),
+                    onChanged: (value) {
+                      companyTypeNotifier.value = value;
+                    },
+                    hint: "Select Company Type",
+                    label: "Company Type",
+                  );
+                },
+              ),
+              SizedBox(height: AppSizes.height(context, 50)),
+              FilledButton(onPressed: () {}, child: Text("Save")),
+              SizedBox(height: AppSizes.height(context, 30)),
             ],
           );
         },
