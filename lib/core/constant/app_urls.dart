@@ -16,6 +16,9 @@ class AppUrls {
   static const String resetPasswordUrl = '$baseUrl/auth/reset-password';
   static const String changePasswordUrl = '$baseUrl/auth/change-password';
 
+  // Member Profile
+  static const String memberProfileUrl = '$baseUrl/member/profile';
+
   // Company Profile
   static const String companyProfileUrl = '$baseUrl/member/company';
 

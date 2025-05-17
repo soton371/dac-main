@@ -1,4 +1,5 @@
 import 'package:dac/core/constant/app_colors.dart';
+import 'package:dac/features/profile/presentation/pages/update_profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -75,9 +76,12 @@ class ProfilePage extends StatelessWidget {
             padding: EdgeInsets.all(AppSizes.paddingBody),
             child: Column(
               children: [
-                ProfileTile(
-                  iconData: HugeIcons.strokeRoundedUserSquare,
-                  title: "View profile",
+                InkWell(
+                  onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_)=> UpdateProfilePage())),
+                  child: ProfileTile(
+                    iconData: HugeIcons.strokeRoundedUserSquare,
+                    title: "Update profile",
+                  ),
                 ),
                 SizedBox(height: AppSizes.paddingInside * 2),
                 InkWell(
