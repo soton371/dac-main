@@ -2,6 +2,7 @@ import 'package:dac/core/constant/app_sizes.dart';
 import 'package:dac/features/home/presentation/widgets/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import '../../../applicant/presentation/pages/applicant_page.dart';
 import '../../../company_profile/presentation/pages/company_profile_page.dart';
 import '../../../document/presentation/page/document_page.dart';
 import '../../../representative/presentation/pages/representative_page.dart';
@@ -29,12 +30,14 @@ class HomePage extends StatelessWidget {
                         color: Colors.blue,
                         requiredFields: 6,
                         percent: 0.3,
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CompanyProfilePage(),
-                          ),
-                        ),
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => const CompanyProfilePage(),
+                              ),
+                            ),
                       ),
                     ),
                     const SizedBox(width: AppSizes.paddingBody),
@@ -45,12 +48,13 @@ class HomePage extends StatelessWidget {
                         color: Colors.amber,
                         requiredFields: 9,
                         percent: 0,
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DocumentPage(),
-                          ),
-                        ),
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DocumentPage(),
+                              ),
+                            ),
                       ),
                     ),
                   ],
@@ -65,12 +69,14 @@ class HomePage extends StatelessWidget {
                         color: Colors.teal,
                         requiredFields: 6,
                         percent: 0,
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RepresentativePage(),
-                          ),
-                        ),
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => const RepresentativePage(),
+                              ),
+                            ),
                       ),
                     ),
                     const SizedBox(width: AppSizes.paddingBody),
@@ -81,6 +87,13 @@ class HomePage extends StatelessWidget {
                         color: Colors.lightBlueAccent,
                         requiredFields: 5,
                         percent: 0,
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ApplicantPage(),
+                              ),
+                            ),
                       ),
                     ),
                   ],
